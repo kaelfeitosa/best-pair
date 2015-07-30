@@ -1,3 +1,5 @@
 package pairiator.model
 
-case class Project(id: Int, name: String)
+import org.joda.time.DateTime
+
+case class Project(id: Int, name: String, lastActivityAt: DateTime)

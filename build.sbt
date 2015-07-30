@@ -4,5 +4,6 @@ version := "0.0.1"
 
 libraryDependencies ++= Seq(
   "org.scalaj" %% "scalaj-http" % "1.1.5",
-  "com.typesafe.play" %% "play-json" % "2.4.2"
+  "com.typesafe.play" %% "play-json" % "2.4.2",
+  "joda-time" % "joda-time" % "2.8.1"
 )
