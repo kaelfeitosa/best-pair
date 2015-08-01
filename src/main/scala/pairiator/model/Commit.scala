@@ -1,5 +1,5 @@
 package pairiator.model
 
-class Commit {
+import org.joda.time.DateTime
 
-}
+case class Commit(id: String, createdAt: DateTime, email: String)
