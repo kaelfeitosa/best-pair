@@ -14,7 +14,7 @@ import pairiator.model._
 import pairiator.repository._
 import org.joda.time._
 
-val ps = LatestPairings(new ProjectRepository, new CommitRepository)
-ps.pairings(new LocalDate().minusDays(2))
+LatestPairings(new ProjectRepository, new CommitRepository)
+  .pairings(new LocalDate().minusDays(2))
 ```
 
