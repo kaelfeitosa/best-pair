@@ -30,10 +30,13 @@ class PairingsController extends Controller {
   get("/pairings") { request: Request =>
     val latests = LatestPairings(new ProjectRepository, new CommitRepository)
     
+    val since = request.params.get("since")
+      .map(LocalDate.parse(_))
+      .getOrElse(LocalDate.now().minusDays(7))
     
     val json = Json.obj(
         "_embedded" -> Json.obj(
-            "pairing" -> Json.toJson(latests.pairings(LocalDate.now().minusDays(2)))
+            "pairing" -> Json.toJson(latests.pairings(since))
         )
     )
     
