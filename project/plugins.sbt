@@ -1,10 +1,12 @@
+addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.0.1") 
+
+addSbtPlugin("me.lessis" % "bintray-sbt" % "0.1.1")
+
+addSbtPlugin("au.com.onegeek" %% "sbt-dotenv" % "1.1.29")
+
 resolvers += Resolver.url(
     "bintray-sbt-plugin-releases",
-    url("http://dl.bintray.com/content/sbt/sbt-plugin-releases"))(
-          Resolver.ivyStylePatterns)
+    url("http://dl.bintray.com/content/sbt/sbt-plugin-releases")
+)(Resolver.ivyStylePatterns)
 
-    addSbtPlugin("me.lessis" % "bintray-sbt" % "0.1.1")
-
-    resolvers += Classpaths.sbtPluginReleases
-
-    addSbtPlugin("au.com.onegeek" %% "sbt-dotenv" % "1.1.29")
+resolvers += Classpaths.sbtPluginReleases

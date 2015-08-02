@@ -6,7 +6,6 @@ import org.joda.time.DateTime
 import pairiator.model.Pairing
 import pairiator.repository.CommitRepository
 import pairiator.model.Commit
-import pairiator.model.Commiter
 import org.joda.time.ReadableDateTime
 import org.joda.time.LocalDate
 import org.joda.time.ReadableInstant
