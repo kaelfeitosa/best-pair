@@ -18,7 +18,7 @@ class PairingsController extends Controller {
       def writes(pairs: Tuple2[Commiter, Commiter]) =
         Json.obj(
             "pilot" -> pairs._1.name,
-            "navigarot" -> pairs._2.name
+            "navigaror" -> pairs._2.name
         )
     }
   
