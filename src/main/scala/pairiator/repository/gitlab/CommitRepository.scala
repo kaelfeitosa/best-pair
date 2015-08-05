@@ -1,17 +1,16 @@
-package pairiator.repository
+package pairiator.repository.gitlab
+
+import org.joda.time.DateTime
 
 import pairiator.Environment
-import pairiator.model.Project
 import pairiator.model.Commit
-import play.api.libs.json.JsPath
-import play.api.libs.json.Reads
-import org.joda.time.DateTime
-import scalaj.http._
+import pairiator.model.Project
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
+import scalaj.http._
 
 class CommitRepository
-  extends Environment
+  extends HttpClient
   with JodaTimeReader {
   
   implicit val commitReads: Reads[Commit] = (
@@ -21,8 +20,7 @@ class CommitRepository
   )(Commit.apply _)
   
   def listBy(a: Project): List[Commit] = {
-    val commits = Http(gitlabUrl + "/projects/" + a.id + "/repository/commits")
-      .headers("PRIVATE-TOKEN" -> privateToken)
+    val commits = request("projects/" + a.id + "/repository/commits")
     
     commits.asString match {
       case HttpResponse(response, 200, _) =>

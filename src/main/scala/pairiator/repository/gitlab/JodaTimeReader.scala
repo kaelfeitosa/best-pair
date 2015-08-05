@@ -1,4 +1,4 @@
-package pairiator.repository
+package pairiator.repository.gitlab
 
 import play.api.libs.json.Reads
 

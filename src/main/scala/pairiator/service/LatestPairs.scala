@@ -1,14 +1,9 @@
 package pairiator.service
 
 import scala.math.Ordering
-import pairiator.repository.ProjectRepository
-import org.joda.time.DateTime
+import org.joda.time._
 import pairiator.model.Pairing
-import pairiator.repository.CommitRepository
-import pairiator.model.Commit
-import org.joda.time.ReadableDateTime
-import org.joda.time.LocalDate
-import org.joda.time.ReadableInstant
+import pairiator.repository.gitlab._
 
 /***
   import pairiator.service._
@@ -33,6 +28,8 @@ case class LatestPairings(projects: ProjectRepository, commits: CommitRepository
       .groupBy(_._1)
       .map(_._2.toSet.toList).flatten.map(_._2)
       .groupBy(_.pair).values
-      .map { pairings => Pairing(pairings.head.pair, pairings.size) }.toList
+      .map { pairings => Pairing(pairings.head.pair, pairings.size) }
+      .toList
+      .sortBy(_.pair._1.name)
   }
 }

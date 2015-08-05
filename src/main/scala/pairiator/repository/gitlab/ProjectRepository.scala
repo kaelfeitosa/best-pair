@@ -1,15 +1,15 @@
-package pairiator.repository
+package pairiator.repository.gitlab
 
-import pairiator.model.Project
-import scalaj.http._
-import play.api.libs.json._
-import play.api.libs.functional.syntax._
-import pairiator.Environment
 import org.joda.time.DateTime
-import org.joda.time.format.ISODateTimeFormat
+
+import pairiator.Environment
+import pairiator.model.Project
+import play.api.libs.functional.syntax._
+import play.api.libs.json._
+import scalaj.http._
 
 class ProjectRepository
-  extends Environment
+  extends HttpClient
   with JodaTimeReader {
   
   implicit val projectReads: Reads[Project] = (
@@ -19,10 +19,7 @@ class ProjectRepository
   )(Project.apply _)
     
   def list(orderBy: String = "last_activity_at", sort: String = "desc"): List[Project] = {
-    val projects = Http(gitlabUrl + "/projects")
-      .param("order_by", orderBy)
-      .param("sort", sort)
-      .headers("PRIVATE-TOKEN" -> privateToken)
+    val projects = request("projects").param("order_by", orderBy).param("sort", sort)
     
     val json = Json.parse(projects.asString.body)
     json.validate[List[Project]] match {

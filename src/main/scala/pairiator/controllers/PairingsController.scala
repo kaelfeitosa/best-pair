@@ -1,15 +1,20 @@
 package pairiator.controllers
 
-import org.joda.time.DateTime
 import org.joda.time.LocalDate
-import com.twitter.finagle.http._
-import com.twitter.finatra.http._
-import pairiator.model._
-import pairiator.repository._
-import pairiator.service.LatestPairings
-import play.api.libs.json._
-import play.api.libs.functional.syntax._
+
+import com.twitter.finagle.http.Request
+import com.twitter.finatra.http.Controller
+
 import pairiator.model.Commiter
+import pairiator.model.Pairing
+import pairiator.repository.gitlab.CommitRepository
+import pairiator.repository.gitlab.ProjectRepository
+import pairiator.service.LatestPairings
+import play.api.libs.functional.syntax._
+import play.api.libs.json.Json
+import play.api.libs.json.Json.toJsFieldJsValueWrapper
+import play.api.libs.json.Writes
+import play.api.libs.json.__
 
 class PairingsController extends Controller {
   implicit val jodaDateTimeWrites = Writes.jodaDateWrites("yyyy-MM-dd'T'HH:mm:ss.SSSZZ")
