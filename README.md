@@ -7,4 +7,5 @@ Open the sbt console on project's root dir.
 $ sbt pairiator/run
 ```
 
-And open [/pairings](http://localhost:8888/pairings)
+And open [/pairings](http://localhost:8888/pairings) using a header `Token` with
+gitlab private token
