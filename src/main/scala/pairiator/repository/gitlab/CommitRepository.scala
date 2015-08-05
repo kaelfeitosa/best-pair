@@ -1,13 +1,13 @@
 package pairiator.repository.gitlab
 
 import org.joda.time.DateTime
-
 import pairiator.Environment
 import pairiator.model.Commit
 import pairiator.model.Project
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
 import scalaj.http._
+import pairiator.service.AuthInfo
 
 class CommitRepository
   extends HttpClient
@@ -19,7 +19,7 @@ class CommitRepository
     (JsPath \ "author_email").read[String]
   )(Commit.apply _)
   
-  def listBy(a: Project): List[Commit] = {
+  def listBy(a: Project)(implicit auth: AuthInfo): List[Commit] = {
     val commits = request("projects/" + a.id + "/repository/commits")
     
     commits.asString match {

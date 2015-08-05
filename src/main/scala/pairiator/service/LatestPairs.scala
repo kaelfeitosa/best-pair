@@ -18,7 +18,7 @@ import pairiator.repository.gitlab._
 case class LatestPairings(projects: ProjectRepository, commits: CommitRepository) {
   implicit val sortByCreatedAt = Ordering.by[DateTime, Long](_.getMillis()).reversed()
   
-  def pairings(since: LocalDate): List[Pairing] = {
+  def pairings(since: LocalDate)(implicit info: AuthInfo): List[Pairing] = {
     projects.list()
       .takeWhile(_.lastActivityAt.isAfter(since.toDateTimeAtStartOfDay()))
       .flatMap(commits.listBy(_))

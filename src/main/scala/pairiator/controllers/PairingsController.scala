@@ -1,10 +1,8 @@
 package pairiator.controllers
 
 import org.joda.time.LocalDate
-
 import com.twitter.finagle.http.Request
 import com.twitter.finatra.http.Controller
-
 import pairiator.model.Commiter
 import pairiator.model.Pairing
 import pairiator.repository.gitlab.CommitRepository
@@ -15,6 +13,7 @@ import play.api.libs.json.Json
 import play.api.libs.json.Json.toJsFieldJsValueWrapper
 import play.api.libs.json.Writes
 import play.api.libs.json.__
+import pairiator.service.gitlab.PrivateToken
 
 class PairingsController extends Controller {
   implicit val jodaDateTimeWrites = Writes.jodaDateWrites("yyyy-MM-dd'T'HH:mm:ss.SSSZZ")
@@ -34,6 +33,7 @@ class PairingsController extends Controller {
 
   get("/pairings") { request: Request =>
     val latests = LatestPairings(new ProjectRepository, new CommitRepository)
+    implicit val auth = PrivateToken(request.headers().get("Token"))
     
     val since = request.params.get("since")
       .map(LocalDate.parse(_))
