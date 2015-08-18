@@ -2,10 +2,22 @@ package pairiator.model
 
 object Commiter {
   def pairBy(a: Commit): (Commiter, Commiter) = {
-    val emails = a.authorEmail.split("@")
-    val authors = emails.head.split("""\+""")
+    def break(value: String) = value.split("""\+""").map(_.trim)
     
-    (Commiter(authors.head + "@" + emails.last), Commiter(authors.last + "@" + emails.last))
+    def takeEmails = {
+      val emails = a.authorEmail.split("@")
+      
+      break(emails.head).map(_ + "@" + emails.last)
+    }
+    
+    def takeNames = break(a.authorName)
+    
+    (
+        Commiter(takeEmails.head, takeNames.head),
+        Commiter(takeEmails.last, takeNames.last)
+    )
   }
+  
+  
 }
-case class Commiter(name: String)
+case class Commiter(name: String, email: String)

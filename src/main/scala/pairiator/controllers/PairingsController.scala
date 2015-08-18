@@ -9,20 +9,20 @@ import pairiator.repository.gitlab.CommitRepository
 import pairiator.repository.gitlab.ProjectRepository
 import pairiator.service.LatestPairings
 import play.api.libs.functional.syntax._
-import play.api.libs.json.Json
 import play.api.libs.json.Json.toJsFieldJsValueWrapper
-import play.api.libs.json.Writes
+import play.api.libs.json._
 import play.api.libs.json.__
 import pairiator.service.gitlab.PrivateToken
+import javax.inject.Inject
 
-class PairingsController extends Controller {
+class PairingsController @Inject()(latests: LatestPairings) extends Controller {
   implicit val jodaDateTimeWrites = Writes.jodaDateWrites("yyyy-MM-dd'T'HH:mm:ss.SSSZZ")
   
   implicit def tuple2Writes = new Writes[Tuple2[Commiter, Commiter]] {
       def writes(pairs: Tuple2[Commiter, Commiter]) =
         Json.obj(
             "pilot" -> pairs._1.name,
-            "navigaror" -> pairs._2.name
+            "navigator" -> pairs._2.name
         )
     }
   
@@ -32,7 +32,6 @@ class PairingsController extends Controller {
   )(unlift(Pairing.unapply))
 
   get("/pairings") { request: Request =>
-    val latests = LatestPairings(new ProjectRepository, new CommitRepository)
     implicit val auth = PrivateToken(request.headers().get("Token"))
     
     val since = request.params.get("since")

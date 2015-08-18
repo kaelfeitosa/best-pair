@@ -16,7 +16,8 @@ class CommitRepository
   implicit val commitReads: Reads[Commit] = (
     (JsPath \ "id").read[String] and
     (JsPath \ "created_at").read[DateTime] and
-    (JsPath \ "author_email").read[String]
+    (JsPath \ "author_email").read[String] and
+    (JsPath \ "author_name").read[String]
   )(Commit.apply _)
   
   def listBy(a: Project)(implicit auth: AuthInfo): List[Commit] = {
