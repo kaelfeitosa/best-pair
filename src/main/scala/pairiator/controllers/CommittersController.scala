@@ -7,17 +7,17 @@ import org.joda.time.LocalDate
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import javax.inject.Inject
-import pairiator.service.LatestCommiters
+import pairiator.service.LatestCommitters
 import play.api.libs.json.Writes
-import pairiator.model.Commiter
+import pairiator.model.Committer
 
-class CommitersController @Inject()(commiters: LatestCommiters) extends Controller {
-  implicit def commiterWrites: Writes[Commiter] = (
+class CommittersController @Inject()(committers: LatestCommitters) extends Controller {
+  implicit def committerWrites: Writes[Committer] = (
       (__ \ "email").write[String] and
       (__ \ "name").write[String]
-  )(unlift(Commiter.unapply))
+  )(unlift(Committer.unapply))
   
-  get("/commiters") { request: Request =>
+  get("/committers") { request: Request =>
     implicit val auth = PrivateToken(request.headers().get("Token"))
     
     val since = request.params.get("since")
@@ -26,7 +26,7 @@ class CommitersController @Inject()(commiters: LatestCommiters) extends Controll
       
      val json = Json.obj(
         "_embedded" -> Json.obj(
-            "commiters" -> Json.toJson(commiters.pairing(since).toList.sortBy(_.name))
+            "committers" -> Json.toJson(committers.pairing(since).toList.sortBy(_.name))
         )
     )
     

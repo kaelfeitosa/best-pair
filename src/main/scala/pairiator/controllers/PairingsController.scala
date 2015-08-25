@@ -3,7 +3,7 @@ package pairiator.controllers
 import org.joda.time.LocalDate
 import com.twitter.finagle.http.Request
 import com.twitter.finatra.http.Controller
-import pairiator.model.Commiter
+import pairiator.model.Committer
 import pairiator.model.Pairing
 import pairiator.repository.gitlab.CommitRepository
 import pairiator.repository.gitlab.ProjectRepository
@@ -18,8 +18,8 @@ import javax.inject.Inject
 class PairingsController @Inject()(latests: LatestPairings) extends Controller {
   implicit val jodaDateTimeWrites = Writes.jodaDateWrites("yyyy-MM-dd'T'HH:mm:ss.SSSZZ")
   
-  implicit def tuple2Writes = new Writes[Tuple2[Commiter, Commiter]] {
-      def writes(pairs: Tuple2[Commiter, Commiter]) =
+  implicit def tuple2Writes = new Writes[Tuple2[Committer, Committer]] {
+      def writes(pairs: Tuple2[Committer, Committer]) =
         Json.obj(
             "pilot" -> pairs._1.name,
             "navigator" -> pairs._2.name
@@ -27,7 +27,7 @@ class PairingsController @Inject()(latests: LatestPairings) extends Controller {
     }
   
   implicit val pairingsWrites: Writes[Pairing] = (
-    __.write[(Commiter, Commiter)] and
+    __.write[(Committer, Committer)] and
     (__ \ "pairings").write[Int]
   )(unlift(Pairing.unapply))
 

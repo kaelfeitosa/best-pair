@@ -1,7 +1,7 @@
 package pairiator.model
 
-object Commiter {
-  def pairBy(a: Commit): (Commiter, Commiter) = {
+object Committer {
+  def pairBy(a: Commit): (Committer, Committer) = {
     def break(value: String) = value.split("""\+""").map(_.trim)
     
     def takeEmails = {
@@ -13,11 +13,9 @@ object Commiter {
     def takeNames = break(a.authorName)
     
     (
-        Commiter(takeEmails.head, takeNames.head),
-        Commiter(takeEmails.last, takeNames.last)
+        Committer(takeEmails.head, takeNames.head),        Committer(takeEmails.last, takeNames.last)
     )
   }
-  
-  
 }
-case class Commiter(name: String, email: String)
+
+case class Committer(name: String, email: String)
