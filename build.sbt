@@ -4,6 +4,8 @@ name := "pairiator"
 
 version := "0.0.1"
 
+scalaVersion := "2.11.7"
+
 lazy val pairiator = project.in(file("."))
   .enablePlugins(DockerPlugin)
 
