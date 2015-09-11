@@ -6,9 +6,6 @@ version := "0.0.1"
 
 scalaVersion := "2.11.7"
 
-lazy val pairiator = project.in(file("."))
-  .enablePlugins(DockerPlugin)
-
 scalacOptions in Test ++= Seq(
   "-deprecation",
   "-encoding", "UTF-8",
@@ -36,3 +33,5 @@ resolvers ++= Seq(
   "twitter-twitterrepo" at
   "https://oss.sonatype.org/content/repositories/snapshots"
 )
+
+enablePlugins(JavaAppPackaging)
