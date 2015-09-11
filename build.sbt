@@ -31,7 +31,8 @@ resolvers ++= Seq(
   Resolver.sonatypeRepo("snapshots"),
   "sonatypeReposcalaz-bintray" at "https://dl.bintray.com/scalaz/releases",
   "twitter-twitterrepo" at
-  "https://oss.sonatype.org/content/repositories/snapshots"
+  "https://oss.sonatype.org/content/repositories/snapshots",
+  "Twitter repo" at "http://maven.twttr.com"
 )
 
 enablePlugins(JavaAppPackaging)
