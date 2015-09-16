@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 class PairingsController @Inject()(latests: LatestPairings) extends Controller {
   implicit val jodaDateTimeWrites = Writes.jodaDateWrites("yyyy-MM-dd'T'HH:mm:ss.SSSZZ")
-  
+
   implicit def tuple2Writes = new Writes[Tuple2[Committer, Committer]] {
       def writes(pairs: Tuple2[Committer, Committer]) =
         Json.obj(
@@ -25,25 +25,33 @@ class PairingsController @Inject()(latests: LatestPairings) extends Controller {
             "navigator" -> pairs._2.name
         )
     }
-  
+
   implicit val pairingsWrites: Writes[Pairing] = (
     __.write[(Committer, Committer)] and
     (__ \ "pairings").write[Int]
   )(unlift(Pairing.unapply))
 
+  options("/pairings") { request: Request =>
+    response.ok("").contentType("application/hal+json")
+      .header("Access-Control-Allow-Origin", "*")
+      .header("Access-Control-Allow-Methods", "GET")
+      .header("Access-Control-Allow-Headers", "token")
+  }
+
   get("/pairings") { request: Request =>
     implicit val auth = PrivateToken(request.headers().get("Token"))
-    
+
     val since = request.params.get("since")
       .map(LocalDate.parse(_))
       .getOrElse(LocalDate.now().minusDays(7))
-    
+
     val json = Json.obj(
         "_embedded" -> Json.obj(
             "pairing" -> Json.toJson(latests.pairings(since))
         )
     )
-    
+
     response.ok(Json.stringify(json)).contentType("application/hal+json")
+      .header("Access-Control-Allow-Origin", "*")
   }
 }

@@ -16,20 +16,28 @@ class CommittersController @Inject()(committers: LatestCommitters) extends Contr
       (__ \ "email").write[String] and
       (__ \ "name").write[String]
   )(unlift(Committer.unapply))
-  
+
+  options("/committers") { request: Request =>
+    response.ok("").contentType("application/hal+json")
+      .header("Access-Control-Allow-Origin", "*")
+      .header("Access-Control-Allow-Methods", "GET")
+      .header("Access-Control-Allow-Headers", "token")
+  }
+
   get("/committers") { request: Request =>
     implicit val auth = PrivateToken(request.headers().get("Token"))
-    
+
     val since = request.params.get("since")
       .map(LocalDate.parse(_))
       .getOrElse(LocalDate.now().minusDays(7))
-      
+
      val json = Json.obj(
         "_embedded" -> Json.obj(
             "committers" -> Json.toJson(committers.pairing(since).toList.sortBy(_.name))
         )
     )
-    
+
     response.ok(Json.stringify(json)).contentType("application/hal+json")
+      .header("Access-Control-Allow-Origin", "*")
   }
 }
